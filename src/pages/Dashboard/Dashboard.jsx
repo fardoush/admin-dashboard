@@ -10,12 +10,11 @@ import Charts from "../../components/ui/Charts";
 import { RiCheckboxMultipleBlankLine } from "react-icons/ri";
 import PieCharts from "../../components/ui/PieCharts";
 import PageTitle from "../../components/common/PageTitle";
-import { useOutletContext } from "react-router";
-
+import { Link, useOutletContext } from "react-router";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const Dashboard = () => {
   const search = useOutletContext();
-
 
   const status = [
     {
@@ -100,17 +99,20 @@ const Dashboard = () => {
       status: "Active",
     },
   ];
-  const filteredEmployees = employees.filter((employee) => employee.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())|| employee.designation.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || employee.dept.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
-
-
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      employee.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+      employee.designation
+        .toLocaleLowerCase()
+        .includes(search.toLocaleLowerCase()) ||
+      employee.dept.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+  ).slice(0,3);
+// const recentEmployees = filteredEmployees.slice(0, 2);
   return (
     <div>
       <div className="mt-5 mb-10">
         <PageTitle />
       </div>
-      {/* ---------------- */}
- 
-      {/* ---------------- */}
       {/* Start Status Cars  */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {status.map((stats) => (
@@ -143,19 +145,32 @@ const Dashboard = () => {
 
       {/* Start Table  */}
       <div className="mt-10">
-        <h2 className="">Showing employee {filteredEmployees.length}</h2>
-        { filteredEmployees.length > 0 ?
-        
-          <Table employees={filteredEmployees} />
-          : (
-    <div className="border border-border rounded-xl bg-card py-10 text-center">
-      <h2 className="text-xl font-semibold">No Employee Found</h2>
-      <p className="text-text-secondary mt-2">
-        Try searching with another name or department.
-      </p>
-    </div>
-  )
-        }
+        <div className=" rounded-t-lg border-border border flex justify-between items-center px-6 py-4">
+          <div>
+            <h2 className="text-lg font-semibold">Recently Joined</h2>
+            <p className="text-xs text-text-secondary">
+              Showing {filteredEmployees.length} employees
+            </p>
+          </div>
+
+          <Link
+            to="employee"
+            className="text-primary text-sm hover:underline flex gap-1 items-center"
+          >
+            View All
+            <FaArrowRightLong />
+          </Link>
+        </div>
+        {filteredEmployees.length > 0 ? (
+          <Table employees={filteredEmployees}/>
+        ) : (
+          <div className="border border-border rounded-xl bg-card py-10 text-center">
+            <h2 className="text-xl font-semibold">No Employee Found</h2>
+            <p className="text-text-secondary mt-2">
+              Try searching with another name or department.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

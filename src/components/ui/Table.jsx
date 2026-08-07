@@ -3,7 +3,7 @@ import React from "react";
 const Table = ({employees}) => {
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border">
+    <div className="overflow-x-auto rounded-b-lg border border-border">
       <table className=" w-full">
         <thead className="bg-card">
           <tr className="text-left">
