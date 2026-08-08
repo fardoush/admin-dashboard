@@ -6,6 +6,8 @@ import { LuArrowUpDown } from "react-icons/lu";
 
 const Employees = () => {
   const [search, setSearch] = useState("");
+  const [department, setDepartment] = useState("All");
+  const [status,setStatus] = useState("All")
   const employees = [
     {
       id: 1,
@@ -70,14 +72,29 @@ const Employees = () => {
     },
   ];
 
-  const filterEmployee = employees.filter(
-    (employee) =>
+  // search , dept filter &
+  const filterEmployee = employees.filter((employee) => {
+    const matchesSearch =
       employee.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
       employee.designation
         .toLocaleLowerCase()
         .includes(search.toLocaleLowerCase()) ||
-      employee.email.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
-  );
+      employee.email.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+
+    const matchesDepartment =
+      department === "All" || employee.dept === department;
+
+      const matchesStatus = status === "All" || employee.status === status
+
+    return matchesSearch && matchesDepartment && matchesStatus;
+  });
+  // department filter
+  const filterEmployeeDepartment = employees.filter((employee) => {
+    if (department === "All") {
+      return true;
+    }
+    return employee.dept === department;
+  });
   return (
     <div>
       <div className="mt-5 mb-10">
@@ -98,27 +115,24 @@ const Employees = () => {
           </div>
           <div className="col-span-1">
             <select
-              name=""
-              id=""
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
               className="w-full bg-card rounded-md px-3 py-2 focus:outline-none"
             >
-              <option value="">All Departments </option>
-              <option value="hr">HR</option>
-              <option value="it">IT</option>
-              <option value="engineer">Engineer</option>
-              <option value="marketing">Marketing</option>
+              <option value="All">All Departments</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Design">Design</option>
             </select>
           </div>
           <div className="col-span-1">
             <select
-              name=""
-              id=""
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
               className="w-full bg-card rounded-md px-3 py-2 focus:outline-none"
             >
-              <option value="">All Statuses </option>
-              <option value="active">Active</option>
-              <option value="onlevel">On Level</option>
-              <option value="remote">Remote</option>
+              <option value="All">All Statuses </option>
+              <option value="Active">Active</option>
+              <option value="Remote">Remote</option>
             </select>
           </div>
           <div className="col-span-1">
@@ -129,6 +143,16 @@ const Employees = () => {
         </div>
 
         <EmployeeTable employees={filterEmployee} />
+        <div className="flex justify-between items-center gap-2 rounded-b-lg border border-border py-2 px-6 bg-card">
+          <div className="">
+            <span className="text-sm">Page 1 of 2</span>
+          </div>
+          <div className="flex gap-2 items-center">
+            <span className="">Next</span>
+            <span className="">1</span>
+            <span className="">Prev</span>
+          </div>
+        </div>
       </div>
     </div>
   );
