@@ -8,6 +8,7 @@ const Employees = () => {
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("All");
   const [status,setStatus] = useState("All")
+  const [sortOrder, setSortOrder] = useState("desc");
   const employees = [
     {
       id: 1,
@@ -88,13 +89,15 @@ const Employees = () => {
 
     return matchesSearch && matchesDepartment && matchesStatus;
   });
-  // department filter
-  const filterEmployeeDepartment = employees.filter((employee) => {
-    if (department === "All") {
-      return true;
+
+  // sorting 
+  const sortedEmployee = [...filterEmployee].sort((a,b)=>{
+    if(sortOrder === "desc"){
+      return b.salary - a.salary;
     }
-    return employee.dept === department;
-  });
+
+    return a.salary - b.salary;
+  })
   return (
     <div>
       <div className="mt-5 mb-10">
@@ -136,13 +139,14 @@ const Employees = () => {
             </select>
           </div>
           <div className="col-span-1">
-            <button className=" w-full bg-card px-3 py-2 rounded-md flex items-center gap-2">
-              <LuArrowUpDown /> Salary Desc
+            <button onClick={() => setSortOrder(sortOrder === "desc" ? "asc" : "desc")} className=" w-full bg-card px-3 py-2 rounded-md flex items-center gap-2">
+              <LuArrowUpDown /> Salary {sortOrder === "desc" ? "Desc" : "Asc"}
             </button>
           </div>
         </div>
 
-        <EmployeeTable employees={filterEmployee} />
+        <EmployeeTable employees={sortedEmployee} />
+        {/* <EmployeeTable employees={filterEmployee} /> */}
         <div className="flex justify-between items-center gap-2 rounded-b-lg border border-border py-2 px-6 bg-card">
           <div className="">
             <span className="text-sm">Page 1 of 2</span>

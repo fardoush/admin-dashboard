@@ -2,7 +2,7 @@ import React from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
 
-const EmployeeTable = ({ employees, filterEmployeeDepartment }) => {
+const EmployeeTable = ({ employees }) => {
   // const {} = employees;
   return (
     <div className="overflow-x-auto  border border-border">
