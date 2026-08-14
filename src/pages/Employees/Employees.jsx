@@ -7,8 +7,13 @@ import { LuArrowUpDown } from "react-icons/lu";
 const Employees = () => {
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("All");
-  const [status,setStatus] = useState("All")
+  const [status, setStatus] = useState("All");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const employeesPerPage = 2;
+  const startIndex = (currentPage - 1) * employeesPerPage;
+  const endIndex = startIndex + employeesPerPage;
+
   const employees = [
     {
       id: 1,
@@ -85,19 +90,23 @@ const Employees = () => {
     const matchesDepartment =
       department === "All" || employee.dept === department;
 
-      const matchesStatus = status === "All" || employee.status === status
+    const matchesStatus = status === "All" || employee.status === status;
 
     return matchesSearch && matchesDepartment && matchesStatus;
   });
 
-  // sorting 
-  const sortedEmployee = [...filterEmployee].sort((a,b)=>{
-    if(sortOrder === "desc"){
+  // sorting
+  const sortedEmployee = [...filterEmployee].sort((a, b) => {
+    if (sortOrder === "desc") {
       return b.salary - a.salary;
     }
 
     return a.salary - b.salary;
-  })
+  });
+
+  // pagination
+  const totalPages = Math.ceil(sortedEmployee.length / employeesPerPage);
+  const currentEmployees = sortedEmployee.slice(startIndex, endIndex);
   return (
     <div>
       <div className="mt-5 mb-10">
@@ -139,22 +148,42 @@ const Employees = () => {
             </select>
           </div>
           <div className="col-span-1">
-            <button onClick={() => setSortOrder(sortOrder === "desc" ? "asc" : "desc")} className=" w-full bg-card px-3 py-2 rounded-md flex items-center gap-2">
+            <button
+              onClick={() =>
+                setSortOrder(sortOrder === "desc" ? "asc" : "desc")}
+              className=" w-full bg-card px-3 py-2 rounded-md flex items-center gap-2">
               <LuArrowUpDown /> Salary {sortOrder === "desc" ? "Desc" : "Asc"}
             </button>
           </div>
         </div>
 
-        <EmployeeTable employees={sortedEmployee} />
+        <EmployeeTable employees={currentEmployees} />
         {/* <EmployeeTable employees={filterEmployee} /> */}
         <div className="flex justify-between items-center gap-2 rounded-b-lg border border-border py-2 px-6 bg-card">
           <div className="">
-            <span className="text-sm">Page 1 of 2</span>
+            <span className="text-sm">Page {currentPage} of {totalPages}</span>
           </div>
           <div className="flex gap-2 items-center">
-            <span className="">Next</span>
-            <span className="">1</span>
-            <span className="">Prev</span>
+            <button
+            disabled ={currentPage === 1}
+              onClick={() =>
+                setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)}
+              className="disabled:opacity-40 disabled:cursor-not-allowed">
+              Prev
+            </button>
+            <span className="">
+              {currentPage} {sortedEmployee.length}
+            </span>
+            <button
+            disabled = {currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage(
+                  currentPage < totalPages ? currentPage + 1 : currentPage,
+                )
+              }
+              className="disabled:opacity-40 disabled:cursor-not-allowed">
+              Next
+            </button>
           </div>
         </div>
       </div>
