@@ -55,7 +55,7 @@ const AddEmployee = () => {
               Department
             </label>
 
-            <select name="" id="" value="Engineering" className="p-2 w-full bg-card focus:outline-none focus:border focus:border-primary rounded-sm text-white" >
+            <select name="" id="" className="p-2 w-full bg-card focus:outline-none focus:border focus:border-primary rounded-sm text-white" >
                 <option value="Design">Design</option>
                 <option value="Product">Product</option>
             </select>
@@ -67,7 +67,7 @@ const AddEmployee = () => {
               status
             </label>
 
-            <select name="" id="" value="Engineering" className="p-2  w-full bg-card focus:outline-none focus:border focus:border-primary rounded-sm text-white" >
+            <select name="" id="" className="p-2  w-full bg-card focus:outline-none focus:border focus:border-primary rounded-sm text-white" >
                 <option value="Design">Active</option>
                 <option value="Product">On leave</option>
                 <option value="Product">Remote</option>
